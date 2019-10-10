@@ -1,90 +1,123 @@
+import copy
 class Atm:
 
     amount_in_atm = 10000
-    status = False
+    user_id = 0
 
-    def __init__(self, name, pin, balance):
-        self.name = name
-        self.pin = pin
-        self.balance = balance
+    user = [{'name': 'Tom', 'pin': 1234,'balance': 15000}, 
+            {'name': 'Jerry', 'pin': 5678, 'balance': 15000}, 
+            {'name': 'Quacker', 'pin': 1357, 'balance': 15000}]
 
-    def login(self):
-        if(Atm.status == True):
-            print("You are already logged in...")
+    def login(name):
+        for user_id in range(len(Atm.user)):
+            if(name == Atm.user[user_id]['name']):
+                break
+
+        if user_id == Atm.user_id:
+            print("Already logged in...")
         else:
             entered_pin = int(input("Enter your pin to log in_ "))
-            if(entered_pin == self.pin):
-                print("Logged in Successfully!")
-                Atm.status = True
+            if entered_pin == Atm.user[user_id]['pin']:
+                Atm.user_id = copy.deepcopy(user_id)
+                print("Logged in successfully")
             else:
-                print("Wrong pin ! kindly check")
+                print("Wrong pin!!!")
 
-    def balance_check(self):
-        if(Atm.status == False):
-            print("You are not logged in.")
-            entered_pin = int(input("Enter your pin to check balance_ "))
+    def balance_check(name):
+        for user_id in range(len(Atm.user)):
+            if(name == Atm.user[user_id]['name']):
+                break
 
-            if(entered_pin == self.pin):
-                print("Logged in Successfully.")
-                Atm.status = True
+        if user_id == Atm.user_id:
+            print('Already Logged in...')
+        else:
+            entered_pin = int(input("Enter your pin to log in_ "))
+            if entered_pin == Atm.user[user_id]['pin']:
+                Atm.user_id = copy.deepcopy(user_id)
+                print("Logged in successfully")
             else:
-                print("Wrong Pin!!!")
+                print("Wrong pin!!!")
+                return
 
-        print("Your balance is {}".format(self.balance))
-          
-    def withdraw(self):
-        if(Atm.status == False):
-            print("Log In to withdraw money. ") 
-            entered_pin = int(input("Enter pin to withdraw money. ")) 
-               
-            if(entered_pin == self.pin): 
-                Atm.status = True 
-       
-        money_to_withdraw = int(input("Enter anmount to withdrawn. "))
+        print("Your account balance is {}".format(Atm.user[user_id]['balance']))
+
+    def withdraw(name):
+        for user_id in range(len(Atm.user)):
+            if(name == Atm.user[user_id]['name']):
+                break
+
+        if user_id == Atm.user_id:
+            print('Already Logged in...')
+        else:
+            entered_pin = int(input("Enter your pin to log in_ "))
+            if entered_pin == Atm.user[user_id]['pin']:
+                Atm.user_id = copy.deepcopy(user_id)
+                print("Logged in successfully")
+            else:
+                print("Wrong pin!!!")
+                return
         
-        if(money_to_withdraw <= self.balance and Atm.amount_in_atm >= money_to_withdraw): 
-            self.balance = self.balance - money_to_withdraw
-            Atm.amount_in_atm = Atm.amount_in_atm - money_to_withdraw
+        amount_withdraw = int(input("Enter amount to withdraw_ "))
+        if(amount_withdraw <= Atm.user[user_id]['balance'] and Atm.amount_in_atm >= amount_withdraw): 
+            Atm.user[user_id]['balance'] = copy.deepcopy(Atm.user[user_id]['balance'] - amount_withdraw)
+            print("Balance after withdraw {}".format(Atm.user[user_id]['balance']))
+            Atm.amount_in_atm = copy.deepcopy(Atm.amount_in_atm - amount_withdraw)
+        else:
+            print("Less amount cannot withdraw...") 
 
-        else: 
-            print("Amount balance is less. ")
+    def change_pin(name):
+        for user_id in range(len(Atm.user)):
+            if(name == Atm.user[user_id]['name']):
+                break
 
-    def transfer_money(self):
-        if (status == False):
-            print("Log In to transfer money. ")
-            entered_pin = int(input("Enter pin to transfer money_ "))
+        if user_id == Atm.user_id:
+            print('Already Logged in...')
+        else:
+            entered_pin = int(input("Enter your pin to log in_ "))
+            if entered_pin == Atm.user[user_id]['pin']:
+                Atm.user_id = copy.deepcopy(user_id)
+                print("Logged in successfully")
+            else:
+                print("Wrong pin!!!")
+                return
 
-            if(entered_pin == self.pin):
-                print("Logged in")
-                name = input("Enter person name to transfer_ ")
-                amount = int(input("Enter amount to transfer "))
-
-                self.balance = self.balance - amount
-                #name.balance = name.balance + amount
-
-    def change_pin(self):
-        if (Atm.status == False):
-            print("Log in to change pin")
-            entered_pin = int(input("Enter pin to log in: "))
-
-            if(self.pin == entered_pin):
-                Atm.status == True
-
-        new_pin = int(input("Enter new pin: "))
-        confirm_new_pin = int(input("Enter once again to confirm: "))    
+        new_pin = int(input("Enter your new pin..."))
+        confirm_new_pin = int(input("Enter pin again to confirm..."))
 
         if(new_pin == confirm_new_pin):
-            print("Pin changed successfully")    
-            self.pin = copy.deepcopy(new_pin)
+            Atm.user[user_id]['pin'] = copy.deepcopy(confirm_new_pin)
+            print("Pin changed successfully!.")
 
-    def logout(self):
-        Atm.status = False
+    def transfer_money(name):
+        for user_id in range(len(Atm.user)):
+            if(name == Atm.user[user_id]['name']):
+                break
+
+        if user_id == Atm.user_id:
+            print('Already Logged in...')
+        else:
+            entered_pin = int(input("Enter your pin to log in_ "))
+            if entered_pin == Atm.user[user_id]['pin']:
+                Atm.user_id = copy.deepcopy(user_id)
+                print("Logged in successfully")
+            else:
+                print("Wrong pin!!!")
+                return
+        transfer_person = input("Enter name of person to transfer...")
+        amount_transfer = int(input("Enter amount to transfer..."))
+
+        print(transfer_person)
+        for transfer_user_id in range(len(Atm.user)):
+            if(transfer_person == Atm.user[transfer_user_id]['name']):
+                break
+
+        Atm.user[transfer_user_id]['balance'] = copy.deepcopy(Atm.user[transfer_user_id]['balance'] + amount_transfer)
+        Atm.user[user_id]['balance'] = copy.deepcopy(Atm.user[user_id]['balance'] - amount_transfer) 
+        print("Money Transferred Successfully!.")
+
+    def logout(name):
+        Atm.user_id = None
         print("logged out Successfully")
-
-obj = []
-Tom = Atm('Tom', 1234, 15000)
-Jerry = Atm('Jerry', 5678, 15000)
-Quacker = Atm('Quacker', 1357, 15000)
 
 a = 1
 
@@ -96,23 +129,13 @@ while(a != 0):
     print("5. Change Pin")
     print("6. Log Out")
     print("0. Exit") 
-    user = input("Enter your name to get started_ ")
-    #pin = int(input("Enter your pin_ "))
-   		 
-            
-    a = int(input("Enter choice-"))
-   
-    if(a == 1):
-    	user.login()
-    elif(a == 2):
-    	user.balance_check()
-    elif(a == 3):
-    	user.withdraw()
-    elif(a == 4):
-    	user.transfer_money()
-    elif(a == 5):
-    	user.change_pin()
-    elif(a == 6):
-    	user.logout()
-    else:
-    	print("Invalid choice")	
+    user_name = input("Enter your name to get started_ ")
+    flag =0
+    for i in range(len(Atm.user)):
+        if user_name == Atm.user[i]['name']:
+            flag = 1
+            a = int(input("Enter choice-"))
+
+
+    switch = {1: 'login', 2: 'balance_check', 3: 'withdraw', 4: 'transfer_money' 5: 'change_pin', 6: 'logout'}
+    print('Atm.' + (switch.get(a)+'('+user_name+')'))
