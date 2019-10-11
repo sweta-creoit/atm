@@ -8,8 +8,7 @@ class Atm:
             'Jerry': {'pin': 5678, 'balance': 15000}, 
             'Quacker': {'pin': 1357, 'balance': 15000}}
 
-    @classmethod
-    def login(cls,name):
+    def login(name):
         if Atm.status == True:
             print("Already logged in...")
         else:
