@@ -108,8 +108,9 @@ while(option != 0):
     print("4. Transfer money")
     print("5. Change Pin")
     print("6. Log Out")
-    print("0. Exit") 
-    user_name = input("Enter your name to get started_ ")
+    print("0. Exit")
+    if Atm.status == False:
+        user_name = input("Enter your name to get started_ ")
     option = int(input("Enter choice-"))
     '''flag =0
     for i in range(len(Atm.user)):
