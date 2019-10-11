@@ -100,6 +100,10 @@ class Atm:
         Atm.status = False
         print("logged out Successfully")
 
+    def no_option(name):
+        exit()
+
+
 option = 1
 
 while(option != 0):
@@ -128,8 +132,9 @@ while(option != 0):
                     3: Atm.withdraw, 
                     4: Atm.transfer_money, 
                     5: Atm.change_pin, 
-                    6: Atm.logout
-                    }
+                    6: Atm.logout, 
+                    0: Atm.no_option
+                }
         #print(switch.get(option))
         return switch.get(option, "Invalid Choice")(user_name)  
 
