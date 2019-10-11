@@ -94,6 +94,7 @@ class Atm:
         Atm.user[transfer_person]['balance'] = copy.deepcopy(Atm.user[transfer_person]['balance'] + amount_transfer)
         Atm.user[name]['balance'] = copy.deepcopy(Atm.user[name]['balance'] - amount_transfer) 
         print("Money Transferred Successfully!.")
+        print("Your balance after transfer {}".format(Atm.user[name]['balance']))
 
     def logout(name):
         Atm.status = False
