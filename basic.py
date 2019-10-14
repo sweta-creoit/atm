@@ -15,13 +15,9 @@ class Atm:
         self.user_id = kwargs.get("user_id")
     
     def balance_check(self, name):
-        if self.user_id == True:
-            print('\nLogged in...\n')
         print("\nYour account balance is {}\n".format(self.balance))
 
     def withdraw(self, name):
-        if self.user_id == True:
-            print('\nLogged in...\n')
         print("\nPossible withdraw Money {}".format(self.withdrawMoney))
         amount_withdraw = 0
         while True:
@@ -42,29 +38,25 @@ class Atm:
             print("\nLimit Exceeded / Less Money\n")
 
     def change_pin(self, name):
-        if self.user_id == True:
-            print('\nLogged in...\n')
         new_pin, confirm_new_pin = 0, 0
         while True: 
             try:
-                new_pin = int(input("Enter your new pin..."))
+                new_pin = int(input("Enter your new pin in 4 digits..."))
                 confirm_new_pin = int(input("Enter pin again to confirm..."))
+                if re.match(r"[0-9]{4}", new_pin) and re.match(r"[0-9]{4}", confirm_new_pin) and new_pin == confirm_new_pin :
+                    Atm.user[name]['pin'] = confirm_new_pin
+                    print("\nPin changed successfully!.")
+                    self.user_id = False
+                    Atm.user[name]['user_id'] = False
+                    Atm.status = False
+                    print("Enter credentials again to log in...\n")
+                else:
+                    print("Pin conditions unmatched...")    
                 break
             except ValueError:
                 print("Invalid pin")    
-            
-        if(new_pin == confirm_new_pin):
-            Atm.user[name]['pin'] = confirm_new_pin
-            print("\nPin changed successfully!.")
-            self.user_id = False
-            Atm.user[name]['user_id'] = False
-            Atm.status = False
-            print("Enter credentials again to log in...\n")
 
     def transfer_money(self, name):
-        if self.user_id == True:
-            print('\nLogged in...\n')
-        
         transfer_name = input("\nEnter name of person to transfer...")
         amount_transfer = 0
         while True:
