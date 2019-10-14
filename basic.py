@@ -21,7 +21,7 @@ class Atm:
             entered_pin = int(input("Enter your pin to log in_ "))
             if entered_pin == self.pin:
                 print("\nLogged in successfully")
-                self.user_id = True
+                Atm.user[name]['user_id'] = True
             else:
                 print("\nWrong pin!!!")
 
@@ -33,7 +33,7 @@ class Atm:
 
             if entered_pin == self.pin:
                 print("\nLogged in successfully")
-                self.user_id = True
+                Atm.user[name]['user_id'] = True
             else:
                 print("\nWrong pin!!!")
                 return
@@ -47,19 +47,19 @@ class Atm:
             entered_pin = int(input("Enter your pin to log in_ "))
             if entered_pin == self.pin:
                 print("\nLogged in successfully")
-                self.user_id = True
+                Atm.user[name]['user_id'] = True
             else:
                 print("\nWrong pin!!!")
                 return
-
         print("\nPossible withdraw Money {}".format(self.withdrawMoney))
         amount_withdraw = int(input("\nEnter amount to withdraw_ "))
         
         if amount_withdraw <= self.balance and Atm.amount_in_atm >= amount_withdraw and self.withdrawMoney >= amount_withdraw: 
             self.balance = self.balance - amount_withdraw
+            Atm.user[name]['balance'] = Atm.user[name]['balance'] - amount_withdraw
             print("\nBalance after withdraw {}".format(self.balance))
             Atm.amount_in_atm = Atm.amount_in_atm - amount_withdraw
-            self.withdrawMoney = self.withdrawMoney - amount_withdraw
+            Atm.user[name]['withdrawMoney'] = Atm.user[name]['withdrawMoney'] - amount_withdraw
         else:
             print("\nLimit Exceeded / Less Money")
 
@@ -70,7 +70,7 @@ class Atm:
             entered_pin = int(input("Enter your pin to log in_ "))
             if entered_pin == self.pin:
                 print("\nLogged in successfully")
-                self.user_id = True
+                Atm.user[name]['user_id'] = True
             else:
                 print("\nWrong pin!!!")
                 return
@@ -79,9 +79,9 @@ class Atm:
         confirm_new_pin = int(input("Enter pin again to confirm..."))
         
         if(new_pin == confirm_new_pin):
-            self.pin = confirm_new_pin
+            Atm.user[name]['pin'] = confirm_new_pin
             print("\nPin changed successfully!.")
-            self.user_id = False
+            Atm.user[name]['user_id'] = False
 
     def transfer_money(self, name):
         if self.user_id == True:
@@ -91,61 +91,52 @@ class Atm:
 
             if entered_pin == self.pin:
                 print("\nLogged in successfully")
-                self.user_id = True
+                Atm.user[name]['user_id'] = True
             else:
                 print("\nWrong pin!!!")
                 return
 
-        transfer_person = input("\nEnter name of person to transfer...")
+        transfer_name = input("\nEnter name of person to transfer...")
         amount_transfer = int(input("Enter amount to transfer..."))
-
-        Atm.user[transfer_person]['balance'] = (Atm.user[transfer_person]['balance'] + amount_transfer)
+        transfer_person = Atm(Atm.user.get(transfer_name))
+        Atm.user[transfer_name]['balance'] = Atm.user[transfer_name]['balance'] + amount_transfer
         self.balance = (self.balance - amount_transfer) 
         print("\nMoney Transferred Successfully!.")
         print("\nYour balance after transfer {}".format(self.balance))
 
     def logout(self, name):
         self.user_id = False
+        Atm.user[name]['user_id'] = False
         print("\nLogged out Successfully")
 
     def no_option(name):
         exit()
-        
-Tom = Atm(Atm.user.get("Tom"))
-Jerry = Atm(Atm.user.get("Jerry"))
-Quacker = Atm(Atm.user.get("Quacker"))
+
 option = 1
 
 while(option != 0):
     print("\n\n    Log In \t\t\tBalance Check")
-    print("{user_name}.login \t {user_name}.balance_check\n")
+    print("{user_name}.login \t {user_name}.balance\n")
     print("    Withdraw \t\t\tTransfer Money")
-    print("{user_name}.withdraw \t {user_name}.transfer_money\n")
+    print("{user_name}.withdraw \t {user_name}.transfer\n")
     print("    Change Pin \t\t\t Log Out")
     print("{user_name}.change_pin \t    {user_name}.logout\n")
     print("\t\t\tExit")
     print("\t\t{user_name.exit}\n\n")
 
     option = input("Enter choice - in above format_ \n")
-    user_name, function_to_do = option.split('.')[0], option.split('.')[1]
+    name, function_to_do = option.split('.')[0], option.split('.')[1]
 
-    if user_name == "Tom":
-        user_name = Tom
-    elif user_name == "Jerry":
-        user_name = Jerry
-    elif user_name == "Quacker":
-        user_name = Quacker
-    else:
-        print("Wrong User!!!...")
+    user_name = Atm(Atm.user.get(name))
 
     def choice(function_to_do):
         switch = {'login': user_name.login, 
-                    'balance_check': user_name.balance_check, 
+                    'balance': user_name.balance_check, 
                     'withdraw': user_name.withdraw,
-                    'transfer_money': user_name.transfer_money, 
+                    'transfer': user_name.transfer_money, 
                     'change_pin': user_name.change_pin, 
                     'logout': user_name.logout, 
                     'exit': user_name.no_option
                 }
-        return switch.get(function_to_do, "Invalid Choice")(user_name)  
+        return switch.get(function_to_do, "Invalid Choice")(name)  
     choice(function_to_do)
