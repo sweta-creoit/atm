@@ -22,9 +22,14 @@ class Atm:
     def withdraw(self, name):
         if self.user_id == True:
             print('\nLogged in...\n')
-
         print("\nPossible withdraw Money {}".format(self.withdrawMoney))
-        amount_withdraw = int(input("\nEnter amount to withdraw_ "))
+        amount_withdraw = 0
+        while True:
+            try:
+                amount_withdraw = int(input("\nEnter amount to withdraw_ "))
+                break
+            except ValueError:
+                print("Not a valid amount!!!")
         
         if amount_withdraw <= self.balance and Atm.amount_in_atm >= amount_withdraw and self.withdrawMoney >= amount_withdraw: 
             self.balance = self.balance - amount_withdraw
@@ -39,9 +44,15 @@ class Atm:
     def change_pin(self, name):
         if self.user_id == True:
             print('\nLogged in...\n')
-        new_pin = int(input("Enter your new pin..."))
-        confirm_new_pin = int(input("Enter pin again to confirm..."))
-        
+        new_pin, confirm_new_pin = 0, 0
+        while True: 
+            try:
+                new_pin = int(input("Enter your new pin..."))
+                confirm_new_pin = int(input("Enter pin again to confirm..."))
+                break
+            except ValueError:
+                print("Invalid pin")    
+            
         if(new_pin == confirm_new_pin):
             Atm.user[name]['pin'] = confirm_new_pin
             print("\nPin changed successfully!.")
@@ -55,7 +66,14 @@ class Atm:
             print('\nLogged in...\n')
         
         transfer_name = input("\nEnter name of person to transfer...")
-        amount_transfer = int(input("Enter amount to transfer..."))
+        amount_transfer = 0
+        while True:
+            try:
+                amount_transfer = int(input("Enter amount to transfer..."))
+                break
+            except ValueError:
+                print("Not a valid amount...")  
+
         transfer_person = Atm(Atm.user.get(transfer_name))
         Atm.user[transfer_name]['balance'] = Atm.user[transfer_name]['balance'] + amount_transfer
         self.balance = (self.balance - amount_transfer) 
@@ -92,14 +110,22 @@ while(Atm.status == False):
         print("5. Logout")
         print("6. Exit")
 
-        option = int(input("\nEnter choice_ "))
+        try: 
+            option = int(input("\nEnter choice_ "))
+        except ValueError:
+            print("\nInvalid Choice\n") 
+            continue
+
         def choice(option):
-            switch = {1: user.balance_check, 
-                        2: user.withdraw,
-                        3: user.transfer_money, 
-                        4: user.change_pin, 
-                        5: user.logout, 
-                        6: user.no_option
-                    }
-            return switch.get(option, "Invalid Choice")(user_name)  
+            if option >=1 and option <=6:
+                switch = {1: user.balance_check, 
+                            2: user.withdraw,
+                            3: user.transfer_money, 
+                            4: user.change_pin, 
+                            5: user.logout, 
+                            6: user.no_option
+                        }       
+                return switch.get(option, "Invalid Choice")(user_name)
+            else:
+                print("\nInvalid Choice!!!\n")     
         choice(option)
