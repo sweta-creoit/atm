@@ -43,7 +43,7 @@ class Atm:
             try:
                 new_pin = int(input("Enter your new pin in 4 digits..."))
                 confirm_new_pin = int(input("Enter pin again to confirm..."))
-                if re.match(r"[0-9]{4}", new_pin) and re.match(r"[0-9]{4}", confirm_new_pin) and new_pin == confirm_new_pin :
+                if new_pin == confirm_new_pin :
                     Atm.user[name]['pin'] = confirm_new_pin
                     print("\nPin changed successfully!.")
                     self.user_id = False
