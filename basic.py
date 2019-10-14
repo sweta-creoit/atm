@@ -1,5 +1,4 @@
 import copy
-import re
 class Atm:
 
     amount_in_atm = 10000
@@ -40,20 +39,22 @@ class Atm:
 
     def change_pin(self, name):
         new_pin, confirm_new_pin = 0, 0
-        while True: 
-                new_pin = input("Enter your new pin in 4 digits...")
-                confirm_new_pin = input("Enter pin again to confirm...")
-                p =re.compile('[0-9]{4}')
-                if re.match(p, new_pin) and re.match(p, confirm_new_pin) and new_pin == confirm_new_pin :
+        while True:
+            try:
+                new_pin = int(input("Enter your new pin in 4 digits..."))
+                confirm_new_pin = int(input("Enter pin again to confirm..."))
+                if new_pin == confirm_new_pin :
                     Atm.user[name]['pin'] = confirm_new_pin
                     print("\nPin changed successfully!.")
                     self.user_id = False
                     Atm.user[name]['user_id'] = False
                     Atm.status = False
                     print("Enter credentials again to log in...\n")
-                    break
                 else:
                     print("Pin conditions unmatched...")    
+                break
+            except ValueError:
+                print("Invalid pin")    
 
     def transfer_money(self, name):
         transfer_name = input("\nEnter name of person to transfer...")
